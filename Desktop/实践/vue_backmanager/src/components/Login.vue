@@ -7,28 +7,22 @@
       </div>
       <!-- 表单区域 -->
       <!-- 绑定 数据对象 -->
-      <el-form :model="loginForm" label-width="0px" class="login_form">
+      <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
         <!-- 用户名 -->
-        <el-form-item>
-          <el-input
-            v-model="loginForm.username"
-            prefix-icon="iconfont icon-iconfonticon-yonghu"
-          ></el-input>
+        <el-form-item prop="username">
+          <el-input v-model="loginForm.username" prefix-icon="iconfont icon-iconfonticon-yonghu">
+          </el-input>
         </el-form-item>
 
         <!-- 密码 -->
-        <el-form-item>
-          <el-input
-            v-model="loginForm.password"
-            type="password"
-            prefix-icon="iconfont icon-iconfonticon-mim"
-          ></el-input>
+        <el-form-item prop="password">
+          <el-input v-model="loginForm.password" type="password" prefix-icon="iconfont icon-iconfonticon-mim"></el-input>
         </el-form-item>
 
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary">主要按钮</el-button>
-          <el-button type="info">信息按钮</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="info" @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -41,10 +35,61 @@ export default {
     return {
       // 这是登陆表单的数据绑定对象
       loginForm: {
-        username: '11',
-        password: '222',
+        username: 'admin',
+        password: '123456',
+      },
+      // 这是表单的验证规则对象
+      loginFormRules: {
+        username: [
+          { required: true, message: '请输入登录名称', trigger: 'blur' },
+          {
+            min: 3,
+            max: 10,
+            message: '长度在 3 到 10 个字符',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          {
+            min: 6,
+            max: 15,
+            message: '长度在 6 到 15 个字符',
+            trigger: 'blur',
+          },
+        ],
       },
     }
+  },
+  methods: {
+    //点击重置按钮  重置登录表单
+    //返回的this就是上面的vue组件实例
+    resetLoginForm() {
+      // console.log(this)
+      this.$refs.loginFormRef.resetFields()
+    },
+    //登录函数
+    login() {
+      //箭头函数中如果只有一个参数 那么就可以省略带掉 小括号
+      this.$refs.loginFormRef.validate(async (valid) => {
+        //如果预校验成功就会返回true 否则就会返回false
+        // console.log(valid)
+        if (!valid) return
+        //loginForm 会保留用户填写的数据
+        //把data数据结构出来
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        if (res.meta.status !== 200) return this.$message.error('登录失败')
+        this.$message.success('登录成功')
+        //1.将登录成功之后的token 保存在客户端的sessionStorage中
+        //项目中除了登录之外的API接口 必须在登录之后才能访问
+        //token 只应在当前网站打开期间有效 所以token要保存在sessionstorage
+        //  进入某个页面时会检查token 如果没有就会重新跳转至登录界面
+
+        // 通过编程式导航跳转到后台 路由地址为/home
+        window.sessionStorage.setItem('token', res.data.token)
+        this.$router.push('/home')
+      })
+    },
   },
 }
 </script>
