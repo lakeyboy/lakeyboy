@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {
     Button, Form, FormItem, Input, Message, Container, Header, Aside, Main,
     Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn,
-    Switch, Tooltip, Pagination
+    Switch, Tooltip, Pagination, Dialog, MessageBox
 } from 'element-ui'
 
 //全局注册
@@ -36,7 +36,9 @@ Vue.use(Switch)
 Vue.use(Tooltip)
 
 Vue.use(Pagination)
+Vue.use(Dialog)
 
-//需要挂载到组件原型上面 这样才可以在全剧中使用
+//需要挂载到组件原型上面 这样才可以在全局中使用
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm;
 

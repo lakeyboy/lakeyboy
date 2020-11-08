@@ -7,16 +7,29 @@
       </div>
       <!-- 表单区域 -->
       <!-- 绑定 数据对象 -->
-      <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
+      <el-form
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginFormRules"
+        label-width="0px"
+        class="login_form"
+      >
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="iconfont icon-dingbudaohang-zhangh">
+          <el-input
+            v-model="loginForm.username"
+            prefix-icon="iconfont icon-dingbudaohang-zhangh"
+          >
           </el-input>
         </el-form-item>
 
         <!-- 密码 -->
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" type="password" prefix-icon="iconfont icon-iconfonticon-mim"></el-input>
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            prefix-icon="iconfont icon-iconfonticon-mim"
+          ></el-input>
         </el-form-item>
 
         <!-- 按钮 -->
@@ -68,7 +81,7 @@ export default {
       // console.log(this)
       this.$refs.loginFormRef.resetFields()
     },
-    //登录函数
+    //登录函数   通过valid惊醒预校验
     login() {
       //箭头函数中如果只有一个参数 那么就可以省略带掉 小括号
       this.$refs.loginFormRef.validate(async (valid) => {
