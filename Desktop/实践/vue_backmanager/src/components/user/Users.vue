@@ -62,7 +62,7 @@
 
         <el-table-column label="操作" width="180px">
           <template slot-scope="scope">
-            <!-- 修改 -->
+            <!-- 编辑 -->
             <el-button
               type="primary"
               icon="el-icon-edit"
