@@ -126,10 +126,13 @@
       @close="EditDialogClose"
     >
       <!-- 内容   -->
-      <!-- :rules="editFormRules" -->
-
-      <el-form :model="editForm" ref="editFormRef" label-width="70px">
-        <el-form-item label="分类名称">
+      <el-form
+        :model="editForm"
+        ref="editFormRef"
+        :rules="editFormRules"
+        label-width="80px"
+      >
+        <el-form-item label="分类名称" prop="cat_name">
           <el-input v-model="editForm.cat_name"></el-input>
         </el-form-item>
       </el-form>
@@ -224,6 +227,12 @@ export default {
       editDialogVisible: false,
       // 修改（查询）分类信息对象
       editForm: {},
+      //修改分类表单 的校验规则对象
+      editFormRules: {
+        cat_name: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' },
+        ],
+      },
     }
   },
   created() {

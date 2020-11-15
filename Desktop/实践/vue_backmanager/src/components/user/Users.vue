@@ -383,7 +383,7 @@ export default {
     EditDialogClose() {
       this.$refs.editFormRef.resetFields()
     },
-    //点击添加用户 预校验
+    //点击修改用户 预校验
     editUserInfo() {
       // 简化promise操作
       this.$refs.editFormRef.validate(async (valid) => {
