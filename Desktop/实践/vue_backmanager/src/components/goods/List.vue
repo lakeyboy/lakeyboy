@@ -10,9 +10,15 @@
     <!-- 卡片视图 -->
     <el-card>
       <!-- 搜索框 -->
+      <!-- 在点击clear后 会重新加载所有数据 -->
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="请输入内容" v-model="queryInfo.query">
+          <el-input
+            placeholder="请输入内容"
+            v-model="queryInfo.query"
+            clearable
+            @clear="getGoodList"
+          >
             <el-button
               slot="append"
               icon="el-icon-search"
