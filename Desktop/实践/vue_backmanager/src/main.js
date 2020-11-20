@@ -25,6 +25,22 @@ Vue.prototype.$http = axios
 Vue.config.productionTip = false
 //全局注册该组件
 Vue.component('tree-table', TreeTable)
+//自定义格式化时间的全局过滤器
+Vue.filter('dateFormat', function (originVal) {
+  const dt = new Date(originVal)
+
+  const y = dt.getFullYear()
+  //需要转为字符串调用padStart  确定为几位 如果不足 就以什么填充 因为 month 是从0开始的，所以需要+1
+  const m = (dt.getMonth() + 1 + '').padStart(2, '0')
+  const d = (dt.getDate() + '').padStart(2, '0')
+
+  const hh = (dt.getHours() + '').padStart(2, '0')
+  const mm = (dt.getMinutes() + '').padStart(2, '0')
+  const ss = (dt.getSeconds() + '').padStart(2, '0')
+
+  //
+  return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+})
 
 new Vue({
   router,
