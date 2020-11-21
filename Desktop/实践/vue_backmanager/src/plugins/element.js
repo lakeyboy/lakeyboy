@@ -4,7 +4,7 @@ import {
     Button, Form, FormItem, Input, Message, Container, Header, Aside, Main,
     Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn,
     Switch, Tooltip, Pagination, Dialog, MessageBox, Tag, Tree, Select, Option, Cascader,
-    Alert, Tabs, TabPane
+    Alert, Tabs, TabPane, Steps, Step
 } from 'element-ui'
 
 //全局注册
@@ -52,6 +52,9 @@ Vue.use(Alert)
 
 Vue.use(Tabs)
 Vue.use(TabPane)
+
+Vue.use(Steps)
+Vue.use(Step)
 
 //需要挂载到组件原型上面 这样才可以在全局中使用
 Vue.prototype.$message = Message;
