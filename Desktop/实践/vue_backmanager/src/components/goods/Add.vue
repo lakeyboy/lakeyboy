@@ -135,6 +135,8 @@ export default {
         goods_number: 0,
         //商品所属的数组
         goods_cat: [],
+        //上传图片后的临时地址  在提交添加商品时使用
+        pics: [],
       },
       //添加商品表单验证规则对象
       addFormRules: {
@@ -171,8 +173,6 @@ export default {
       headerObj: {
         Authorization: window.sessionStorage.getItem('token'),
       },
-      //上传图片后的临时地址  在提交添加商品时使用
-      pics: [],
     }
   },
   created() {
@@ -237,12 +237,9 @@ export default {
           return this.$message.error('获取静态属性列表失败!')
         }
         //需要判定是否为 空字符串 空字符串会导致 参数项中 有空的一项
-        res.data.forEach((item) => {
-          item.attr_vals =
-            item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
-        })
 
         this.onlyTableData = res.data
+        // console.log(this.onlyTableData)
       }
     },
     //点击名字 预览图片
@@ -252,7 +249,8 @@ export default {
     //上载图片成功时调用
     handleSuccess(response) {
       // 1.拼接 一个图片信息对象
-      const picInfo = { pic: response.data.tem_path }
+      const picInfo = { pic: response.data.tmp_path }
+      // console.log(picInfo)
       // 2.将图片信息对象 push 到pics 中
       this.addForm.pics.push(picInfo)
     },
