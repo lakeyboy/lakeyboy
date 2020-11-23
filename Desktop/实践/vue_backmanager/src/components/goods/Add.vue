@@ -31,7 +31,7 @@
       <el-form
         :model="addForm"
         :rules="addFormRules"
-        ref="ruleForm"
+        ref="addFormRef"
         label-width="100px"
         label-position="top"
       >
@@ -111,17 +111,31 @@
             </el-upload>
           </el-tab-pane>
           <el-tab-pane label="商品内容" name="4">
-            <el-form-item label="商品名称" prop="goods_name">
-              <el-input v-model="addForm.goods_name"></el-input>
-            </el-form-item>
+            <quill-editor v-model="addForm.goods_introduce"></quill-editor>
+            <!-- 添加商品按钮 -->
+            <el-button type="primary" class="btnAdd" @click="add"
+              >添加商品</el-button
+            >
           </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
+
+    <!-- 图片预览对话框 -->
+    <el-dialog
+      title="图片预览"
+      :visible.sync="previewDialogVisible"
+      width="50%"
+    >
+      <img :src="previewPath" alt="" class="previewImg" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+// 导入lodash 其中使用 _ 表示lodash
+
+import _ from 'lodash'
 export default {
   data() {
     return {
@@ -137,6 +151,10 @@ export default {
         goods_cat: [],
         //上传图片后的临时地址  在提交添加商品时使用
         pics: [],
+        //商品详情 添加的富文本
+        goods_introduce: '',
+        //动态 静态参数列表
+        attrs: [],
       },
       //添加商品表单验证规则对象
       addFormRules: {
@@ -173,6 +191,10 @@ export default {
       headerObj: {
         Authorization: window.sessionStorage.getItem('token'),
       },
+      //预览图片的地址
+      previewPath: '',
+      //控制图片预览对话框的显示与隐藏
+      previewDialogVisible: false,
     }
   },
   created() {
@@ -242,10 +264,27 @@ export default {
         // console.log(this.onlyTableData)
       }
     },
+
     //点击名字 预览图片
-    handlePreview() {},
-    //点击 X 删除图片
-    handleRemove() {},
+    handlePreview(file) {
+      this.previewPath = file.response.data.url
+
+      // console.log(this.previewPath)
+      this.previewDialogVisible = true
+    },
+
+    //点击 X 删除图片  file 为移除的图片的信息
+    handleRemove(file) {
+      // 1.获取将要删除图片的索引值
+      const filePath = file.response.data.tmp_path
+      // 2.从pic 数组中 找到这个图片对应的索引  x表示数组中的每一项   返回值为对应的对象的索引值
+      const i = this.addForm.pics.findIndex((x) => {
+        x.pic === filePath
+      })
+      // 3.调用splice 从数组中删除
+      this.addForm.pics.splice(i, 1)
+    },
+
     //上载图片成功时调用
     handleSuccess(response) {
       // 1.拼接 一个图片信息对象
@@ -253,6 +292,56 @@ export default {
       // console.log(picInfo)
       // 2.将图片信息对象 push 到pics 中
       this.addForm.pics.push(picInfo)
+    },
+
+    //点击添加商品按钮
+    add() {
+      //需要先进行表单预校验
+      this.$refs.addFormRef.validate(async (valid) => {
+        if (!valid) {
+          return this.$message.error('请填写必要的表单!')
+        }
+
+        //可以添加商品数据了
+        // 如果直接修改   addForm数据则会报错 需要进行深拷贝 复制出和原来一样的对象
+        const form = _.cloneDeep(this.addForm)
+
+        form.goods_cat = form.goods_cat.join(',')
+        // 处理动态参数
+        this.manyTableData.forEach((item) => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals.join(' '),
+          }
+
+          this.addForm.attrs.push(newInfo)
+        })
+        //处理静态参数
+        this.onlyTableData.forEach((item) => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals,
+          }
+
+          this.addForm.attrs.push(newInfo)
+        })
+
+        form.attrs = this.addForm.attrs
+        //个人感觉这个深拷贝 可以放在后面 等所有数据处理后再执行
+        // const form = _.cloneDeep(this.addForm)
+        // form.goods_cat = form.goods_cat.join(',')
+        // console.log(form)
+
+        // 发起请求  商品名字必须是唯一的  参数应该是一个对象{} 而form已经是一个对象了 所以不需要加{}
+        const { data: res } = await this.$http.post('goods', form)
+
+        if (res.meta.status !== 201) {
+          return this.$message.error('添加商品失败!')
+        }
+        this.$message.success('添加商品成功!')
+        // 通过路由导航跳转至商品页面!
+        this.$router.push('/goods')
+      })
     },
   },
   computed: {
@@ -270,5 +359,13 @@ export default {
 <style lang="less" scoped>
 .el-checkbox {
   margin: 0 10px 0 0 !important;
+}
+
+.previewImg {
+  width: 100%;
+}
+
+.btnAdd {
+  margin-top: 10px;
 }
 </style>
