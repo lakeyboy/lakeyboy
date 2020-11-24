@@ -106,7 +106,8 @@
 
 <script>
 //上一级使用../  同级使用 ./
-import cityData from './cityData.js'
+
+import { regionData, CodeToText } from 'element-china-area-data'
 
 export default {
   data() {
@@ -137,7 +138,7 @@ export default {
         ],
       },
       //  属性名和值相同  就可以简写
-      cityData,
+      cityData: regionData,
     }
   },
 
