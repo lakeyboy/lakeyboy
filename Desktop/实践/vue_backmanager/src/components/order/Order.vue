@@ -40,16 +40,19 @@
         </el-table-column>
         <el-table-column label="操作" prop="">
           <template>
+            <!-- 编辑收获地址 -->
             <el-button
               size="mini"
               type="primary"
               icon="el-icon-edit"
               @click="showBox"
             ></el-button>
+            <!-- 物流进度 -->
             <el-button
               size="mini"
               type="success"
               icon="el-icon-location"
+              @click="showProgressBox"
             ></el-button>
           </template>
         </el-table-column>
@@ -59,7 +62,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[8, 12, 16]"
+        :page-sizes="[5, 7, 9]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -67,8 +70,7 @@
       </el-pagination>
     </el-card>
 
-    <!-- 修改对话框 -->
-
+    <!-- 修改地址信息-->
     <el-dialog
       title="修改地址"
       :visible.sync="addressVisible"
@@ -100,13 +102,25 @@
         >
       </span>
     </el-dialog>
+    <!-- 物流对话框 -->
+    <el-dialog title="物流进度" :visible.sync="progressVisible" width="50%">
+      <!-- 时间线 -->
+      <el-timeline>
+        <el-timeline-item
+          v-for="(activity, index) in progressInfo"
+          :key="index"
+          :timestamp="activity.time"
+        >
+          {{ activity.context }}
+        </el-timeline-item>
+      </el-timeline>
+    </el-dialog>
   </div>
 </template>
 
 
 <script>
 //上一级使用../  同级使用 ./
-
 import { regionData, CodeToText } from 'element-china-area-data'
 
 export default {
@@ -115,7 +129,7 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 8,
+        pagesize: 5,
       },
       //订单数据
       orderlist: [],
@@ -139,6 +153,10 @@ export default {
       },
       //  属性名和值相同  就可以简写
       cityData: regionData,
+      //控制物流对话框
+      progressVisible: false,
+      //物流信息
+      progressInfo: [],
     }
   },
 
@@ -174,6 +192,20 @@ export default {
     //清空选择框
     addressDialogClosed() {
       this.$refs.addressFormRef.resetFields()
+    },
+
+    //展示 物流信息对话框
+    async showProgressBox() {
+      //接口问题无法请求到数据
+
+      // const { data: res } = await this.$http.get('/kuaidi/1106975712662')
+
+      // if (res.meta.status !== 200) {
+      //   return this.$message.error('获取物流信息失败!')
+      // }
+
+      // this.progressInfo = res.data
+      this.progressVisible = true
     },
   },
 }

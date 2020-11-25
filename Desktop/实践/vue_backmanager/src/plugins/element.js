@@ -4,7 +4,7 @@ import {
     Button, Form, FormItem, Input, Message, Container, Header, Aside, Main,
     Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn,
     Switch, Tooltip, Pagination, Dialog, MessageBox, Tag, Tree, Select, Option, Cascader,
-    Alert, Tabs, TabPane, Steps, Step, CheckboxGroup, Checkbox, Upload
+    Alert, Tabs, TabPane, Steps, Step, CheckboxGroup, Checkbox, Upload, Timeline, TimelineItem
 } from 'element-ui'
 
 //全局注册
@@ -60,6 +60,9 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 
 Vue.use(Upload)
+
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 
 //需要挂载到组件原型上面 这样才可以在全局中使用
 Vue.prototype.$message = Message;
