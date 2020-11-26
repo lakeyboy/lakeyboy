@@ -124,7 +124,9 @@ export default {
 }
 
 .el-header {
-  background-color: #4c8af4;
+  // background-color: #4c8af4;
+  background-color: #545c64;
+
   display: flex;
   justify-content: space-between;
   padding-left: 0;
