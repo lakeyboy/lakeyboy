@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-text 会替换所有内容 -->
+        <!-- v-html如果是普通文本效果和v-text一样，如果是html结构就会被解析出来 -->
+        <!-- v-on 事件绑定 dbclick  双击事件-->
+        <!-- vue是通过 数据 来控制dom元素的显、隐，不是直接控制dom元素 -->
+        <!-- v-if 是直接通过操作dom元素 -->
+        <!-- v-bind 动态绑定一些元素的属性 如src title class -->
+        <!-- img 有title属性属性 用于鼠标放上去显示的字体 -->
+        <!-- v-show="b>0" 后面的b>0相当于一个判断语句 如果大于0  返回true  否则返回false -->
+
+        v-show 原理就是修改元的 display 属性
+        <h1 v-text="message"></h1>
+        <p v-html="content"></p>
+
+        <input type="button" value="测试事件绑定" v-on:click="test">
+        <input type="button" value="测试事件绑定" @click="test">
+
+        <div>
+            <button @click="down">-</button>
+            <span>{{num}}</span>
+            <button @click="up">+</button>
+        </div>
+        <h1 v-show="num>=5">控制显示和隐藏</h1>
+
+        <h1 v-show="isShow">控制显示和隐藏</h1>
+
+
+        <h1 v-if="isShow">if情况</h1>
+        <h1 v-else="isShow">else情况</h1>
+
+        <img src="" alt="" v-bind:class="isActive?'active':''">
+        可以写作 三元表达式 或者 对象的形式
+        <img src="" alt="" v-bind:class="{active:Active}">
+        <img src="" alt="" :class="{active:Active}" :title="imgTitle+'拼接字符串'">
+
+
+    </div>
+
+
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                message: "程序员",
+                content: "<a href='#'>双引号内部使用单引号</a>",
+                num: 0,
+                isShow: true
+            },
+            methods: {
+                test() {
+                    alert(1)
+                },
+                up() {
+                    this.isShow = !this.isShow
+
+                    if (this.num < 10) {
+                        this.num++
+                    } else {
+                        alert("太大了")
+                    }
+                },
+                down() {
+                    this.isShow = !this.isShow
+
+                    if (this.num > 0) {
+                        this.num--
+                    } else {
+                        alert("太小了")
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
