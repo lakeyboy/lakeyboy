@@ -17,8 +17,14 @@
         <!-- v-bind 动态绑定一些元素的属性 如src title class -->
         <!-- img 有title属性属性 用于鼠标放上去显示的字体 -->
         <!-- v-show="b>0" 后面的b>0相当于一个判断语句 如果大于0  返回true  否则返回false -->
+        <!-- v-for = "(item,index) in arr" item表示每一项，index表示索引 -->
+        <!-- v-show 原理就是修改元的 display 属性 -->
+        <!-- 事件修饰符  表示只有一些特殊的事件才会触发某些操作   @keyup.enter="" -->
+        <!-- v-model 可以便捷的设置和获取表单元素的值  绑定的数据和表单元素的值是双向绑定的 -->
+        <!-- 在替换值时可以使用v-text= "变量" 也可以使用插值表达式 -->
+        <!-- splice可以删除指定元素 -->
+        <!-- shift删除左边第一个 -->
 
-        v-show 原理就是修改元的 display 属性
         <h1 v-text="message"></h1>
         <p v-html="content"></p>
 
@@ -43,7 +49,7 @@
         <img src="" alt="" v-bind:class="{active:Active}">
         <img src="" alt="" :class="{active:Active}" :title="imgTitle+'拼接字符串'">
 
-
+        <input type="text" v-model="message">
     </div>
 
 
