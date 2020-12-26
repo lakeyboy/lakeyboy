@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="获取笑话数据" @click="getJock">
+        <p>{{joke}}</p>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        // 导入的代码要写在前面
+        //获取数据渲染到页面
+        var app = new Vue({
+            el: "#app",
+            data: {
+                joke: "笑话"
+            },
+            methods: {
+                async getJock() {
+                    //外面和   then()  里面的this不一致，这里表示把外面this带进来
+                    // let that = this;
+                    // axios.get("https://autumnfish.cn/api/joke").then(
+                    //     function (response) {
+                    //         that.joke = response.data
+                    //     },
+                    //     function (err) {
+                    //         console.log(err)
+                    //     }
+                    // )
+                    const { data: res } = await axios.get("https://autumnfish.cn/api/joke")
+                    this.joke = res
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>

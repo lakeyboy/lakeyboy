@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <!-- logo -->
+            <div></div>
+            <!-- 输入框 -->
+            <div>
+                <input type="text" v-model="city" @keyup.enter="searchWeather" class="input_txt" placeholder="请输入查询">
+                <button @click="searchWeather">搜索</button>
+            </div>
+            <!-- 预置的搜索选项 -->
+            <div>
+                <!-- 双引号 内需要使用 单引号 -->
+                <a href="javascript:;" @click="changeCity('北京')">北京</a>
+                <a href="javascript:;" @click="changeCity('上海')">上海</a>
+                <a href="javascript:;" @click="changeCity('广州')">广州</a>
+                <a href="javascript:;" @click="changeCity('深圳')">深圳</a>
+
+            </div>
+        </div>
+
+        <!-- 显示列表 -->
+        <ul>
+            <li v-for="(item,index) in weatherList" :key="index">
+                <div><span>{{item.type}}</span></div>
+                <div>
+                    <b>{{item.low}}</b>
+                    <b>{{item.high}}</b>
+                </div>
+                <div><span>{{item.date}}</span></div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- <script></script>标签需要写在下面等页面渲染以后再执行，或者使用window.load -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- ../表示上级目录 -->
+    <script src="./main.js"></script>
+</body>
+
+</html>
